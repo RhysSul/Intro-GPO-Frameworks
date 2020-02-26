@@ -147,10 +147,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\source\GPRO-FW-3000\inputoutput.c" />
     <ClCompile Include="..\..\..\source\GPRO-FW-3000\foo.c" />
+    <ClCompile Include="..\..\..\source\GPRO-FW-3000\random.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\include\GPRO-FW-3000\inputoutput.h" />
     <ClInclude Include="..\..\..\include\GPRO-FW-3000\foo.h" />
+    <ClInclude Include="..\..\..\include\GPRO-FW-3000\random.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
