@@ -134,8 +134,19 @@ inline gs_tictactoe_space_state gs_tictactoe_checkWin(gs_tictactoe game)
 		if (areDiagonalsTheSame)
 			return diagonalOne;
 	}
-	return gs_tictactoe_space_state::gs_tictactoe_space_open;
-
+	unsigned char openSpaces = 0;
+	for (unsigned char xpos = 0; xpos < GS_TICTACTOE_BOARD_WIDTH; ++xpos)
+	{
+		for (unsigned char ypos = 0; ypos < GS_TICTACTOE_BOARD_HEIGHT; ++ypos)
+		{
+			gs_tictactoe_space_state currentSpace = gs_tictactoe_getSpaceState(game, xpos, ypos);
+			if (currentSpace == gs_tictactoe_space_state::gs_tictactoe_space_open)
+				++openSpaces;
+		}
+	}
+		if(openSpaces > 0)
+			return gs_tictactoe_space_state::gs_tictactoe_space_open;
+		return gs_tictactoe_space_state::gs_tictactoe_space_invalid;
 }
 
 //-----------------------------------------------------------------------------
@@ -145,13 +156,33 @@ int launchTicTacToe()
 {
 	gs_tictactoe game;
 	gs_tictactoe_reset(game);
-	gs_tictactoe_space_state currentPlayerState = gs_tictactoe_space_state::gs_tictactoe_space_x;
+	gs_tictactoe_space_state currentPlayerState = gs_tictactoe_space_state::gs_tictactoe_space_invalid;
 	gs_tictactoe_space_state gameWinner = gs_tictactoe_space_state::gs_tictactoe_space_open;
 	char currentPlayer = 'X';
 
 	while (gameWinner == gs_tictactoe_space_state::gs_tictactoe_space_open)
 	{
-		
+		switch (currentPlayerState)
+		{
+		case gs_tictactoe_space_o:
+		{
+			currentPlayerState = gs_tictactoe_space_x;
+			currentPlayer = 'X';
+		}
+		break;
+		case gs_tictactoe_space_x:
+		{
+			currentPlayerState = gs_tictactoe_space_o;
+			currentPlayer = '0';
+			break;
+		}
+		default:
+		{
+			currentPlayerState = gs_tictactoe_space_x;
+			currentPlayer = 'X';
+			break;
+		}
+		}
 		gs_tictactoe_space_state spaceState = gs_tictactoe_space_state::gs_tictactoe_space_invalid;
 		int x, y;
 		while (spaceState != gs_tictactoe_space_state::gs_tictactoe_space_open) // Update to be if it's not the piece we are either
@@ -171,29 +202,12 @@ int launchTicTacToe()
 		}
 		gs_tictactoe_setSpaceState(game, currentPlayerState, x, y);
 		gs_tictactoe_print(game);
-
-		switch (currentPlayerState)
-		{
-		case gs_tictactoe_space_o:
-		{
-			currentPlayerState = gs_tictactoe_space_x;
-			currentPlayer = 'X';
-		}
-			break;
-		case gs_tictactoe_space_x:
-		{
-			currentPlayerState = gs_tictactoe_space_o;
-			currentPlayer = '0';
-			break;
-		}
-		default:
-			break;
-		}
 		gameWinner = gs_tictactoe_checkWin(game);
 	}
-
+	if(gameWinner != gs_tictactoe_space_state::gs_tictactoe_space_invalid)
 	cout << "Winner for: " << currentPlayer << endl;
-
+	else
+		cout << "Tie Game." << endl;
 
 	return 0;
 }
