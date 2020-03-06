@@ -8,8 +8,6 @@ using namespace std;
 int main()
 {
 	int userDecision = 0;
-	launchBattleship();
-	/*
 	while (userDecision != 3)
 	{
 		cout << "Enter '1' to play tictactoe. " << endl;
@@ -21,14 +19,15 @@ int main()
 		case 1:
 		{
 			launchTicTacToe();
+			break;
 		}
 		case 2:
 		{
-
+			launchBattleship();
+			break;
 		}
 		default:
 			break;
 		}
 	}
-	*/
 }
