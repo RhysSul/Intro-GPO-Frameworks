@@ -284,17 +284,40 @@ int launchBattleship()
 
 	gs_battleship_index currentPlayer = 0;
 
-	while (1)
-	{
-		gs_battleship_setupLoop(game);
-		gs_battleship_inGameLoop(game, currentPlayer);
-	}
+	gs_battleship_setupLoop(game);
+	gs_battleship_inGameLoop(game, currentPlayer);
+
 	return 0;
+}
+
+inline gs_battleship_index gs_battleship_detectWin(gs_battleship& game)
+{
+	gs_battleship_index xpos, ypos;
+	for (gs_battleship_index player = 0; player < GS_BATTLESHIP_PLAYERS; ++player)
+	{
+		int numHits = 0;
+		for (xpos = 0; xpos < GS_BATTLESHIP_BOARD_WIDTH; ++xpos)
+		{
+			for (ypos = 0; ypos < GS_BATTLESHIP_BOARD_HEIGHT; ++ypos)
+			{
+				if (gs_battleship_getSpaceState(game, player, xpos, ypos) == gs_battleship_space_hit)
+				{
+					++numHits;
+				}
+			}
+		}
+		if (numHits >= 17)
+		{
+			return player;
+		}
+	}
+	return -1;
 }
 
 void gs_battleship_inGameLoop(gs_battleship& game, gs_battleship_index& currentPlayer)
 {
-	while (1)
+	gs_battleship_index loser = -1;
+	while (loser != -1)
 	{
 		int b = 0;
 		while (b == 0)
@@ -302,6 +325,7 @@ void gs_battleship_inGameLoop(gs_battleship& game, gs_battleship_index& currentP
 			cout << "Enter 1 when ready to start your turn player: " << "X" << "." << endl;
 			cin >> b;
 		}
+
 		cout << "Your board is: " << endl;
 		gs_battleship_print(game, currentPlayer);
 
@@ -321,6 +345,7 @@ void gs_battleship_inGameLoop(gs_battleship& game, gs_battleship_index& currentP
 			int otherPlayer = 0;
 			if (otherPlayer == currentPlayer)
 				otherPlayer = 1;
+
 			auto spaceState = gs_battleship_getSpaceState(game, otherPlayer, x, y);
 			switch (spaceState)
 			{
@@ -347,6 +372,7 @@ void gs_battleship_inGameLoop(gs_battleship& game, gs_battleship_index& currentP
 				break;
 			}
 		}
+
 		switch (gs_battleship_testSpace(game, currentPlayer, x, y) )
 		{
 		case gs_battleship_space_hit:
@@ -373,7 +399,12 @@ void gs_battleship_inGameLoop(gs_battleship& game, gs_battleship_index& currentP
 		else
 			currentPlayer = 0;
 		gs_battleship_clearScreen();
+		loser = gs_battleship_detectWin(game);
 	}
+	char winnerName = '1';
+	if (loser == 1)
+		winnerName = '2';
+	cout << "Congratulations Player: " << winnerName << " you win!" << endl;
 }
 
 
