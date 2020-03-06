@@ -1,6 +1,7 @@
 
 #include <stdio.h>
 #include <iostream>
+#include "GPRO-FW-3000/display.h"
 using namespace std;
 
 //-----------------------------------------------------------------------------
@@ -102,9 +103,7 @@ inline void gs_battleship_print(gs_battleship game, gs_battleship_index player)
 			default:
 				break;
 			}
-			cout << outputSpace << " ";
 		}
-		cout << endl;
 	}
 }
 
@@ -161,10 +160,6 @@ inline gs_battleship_space_state gs_battleship_testSpace(gs_battleship  game, gs
 	}
 }
 
-inline void gs_battleship_clearScreen()
-{
-	system("CLS");
-}
 //-----------------------------------------------------------------------------
 // DEFINITIONS
 
@@ -182,30 +177,30 @@ inline void gs_battleship_setupLoop(gs_battleship& game)
 	gs_battleship_index currentPlayer = 0;
 	while(currentPlayer != 2)
 	{
-	gs_battleship_clearScreen();
+	clearScreen();
 	cout << "Currently playing the carrier (5 spaces): CCCCC" << endl;
 	gs_battleship_print(game, currentPlayer);
 	gs_battleship_placeShip(game, currentPlayer, 5, gs_battleship_space_carrier5);
 	gs_battleship_print(game, currentPlayer);
-	gs_battleship_clearScreen();
+	clearScreen();
 
 	cout << "Currently placing the battleship (4 spaces): BBBB " << endl;
 	gs_battleship_print(game, currentPlayer);
 	gs_battleship_placeShip(game, currentPlayer, 4, gs_battleship_space_battleship4);
 	gs_battleship_print(game, currentPlayer);
-	gs_battleship_clearScreen();
+	clearScreen();
 
 	cout << "Currently placing the destroyer (3 spaces): DDD " << endl;
 	gs_battleship_print(game, currentPlayer);
 	gs_battleship_placeShip(game, currentPlayer, 3, gs_battleship_space_destroyer3);
 	gs_battleship_print(game, currentPlayer);
-	gs_battleship_clearScreen();
+	clearScreen();
 
 	cout << "Currently placing the submarine (3 spaces): SSS " << endl;
 	gs_battleship_print(game, currentPlayer);
 	gs_battleship_placeShip(game, currentPlayer, 3, gs_battleship_space_submarine3);
 	gs_battleship_print(game, currentPlayer);
-	gs_battleship_clearScreen();
+	clearScreen();
 
 	cout << "Currently placing the destroyer (2 spaces): PP" << endl;
 	gs_battleship_print(game, currentPlayer);
@@ -213,7 +208,7 @@ inline void gs_battleship_setupLoop(gs_battleship& game)
 	gs_battleship_print(game, currentPlayer);
 	++currentPlayer;
 	}
-	gs_battleship_clearScreen();
+	clearScreen();
 	cout << "Setup Finished." << endl;
 }
 
@@ -398,7 +393,7 @@ void gs_battleship_inGameLoop(gs_battleship& game, gs_battleship_index& currentP
 			currentPlayer = 1;
 		else
 			currentPlayer = 0;
-		gs_battleship_clearScreen();
+		clearScreen();
 		loser = gs_battleship_detectWin(game);
 	}
 	char winnerName = '1';

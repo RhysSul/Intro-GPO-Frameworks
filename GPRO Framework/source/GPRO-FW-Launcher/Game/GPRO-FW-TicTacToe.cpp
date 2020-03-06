@@ -1,7 +1,8 @@
 
 #include <stdio.h>
-
 #include <iostream>
+#include "GPRO-FW-3000/inputoutput.h"
+#include "GPRO-FW-3000/display.h"
 using namespace std;
 //-----------------------------------------------------------------------------
 // DECLARATIONS
@@ -59,29 +60,28 @@ inline gs_tictactoe_index gs_tictactoe_reset(gs_tictactoe game)
 
 inline gs_tictactoe_index gs_tictactoe_print(gs_tictactoe game)
 {
-	cout << "Printing Board..." << endl;
+	char board[GS_TICTACTOE_BOARD_WIDTH * GS_TICTACTOE_BOARD_HEIGHT];
 	gs_tictactoe_index xpos, ypos, total;
 	for (xpos = 0; xpos < GS_TICTACTOE_BOARD_WIDTH; ++xpos)
 	{
 		for (ypos = 0; ypos < GS_TICTACTOE_BOARD_HEIGHT; ++ypos)
 		{
 			gs_tictactoe_space_state currentSpace =  gs_tictactoe_getSpaceState(game, xpos, ypos);
-			char outputVal = ' ';
+			board[(xpos+1) * ypos] = ' ';
 			switch (currentSpace)
 			{
 			case gs_tictactoe_space_o:
-				outputVal = 'O';
+				board[(xpos + 1) * ypos] = 'O';
 				break;
 			case gs_tictactoe_space_x:
-				outputVal = 'X';
+				board[(xpos + 1) * ypos] = 'X';
 				break;
 			default:
 				break;
 			}
-			cout << outputVal << " ";
 		}
-		cout << endl;
 	}
+	drawBoard(board, GS_TICTACTOE_BOARD_WIDTH, GS_TICTACTOE_BOARD_HEIGHT); // add in null terminate
 	total = (xpos * ypos);
 	return total;
 }
@@ -188,12 +188,11 @@ int launchTicTacToe()
 		while (spaceState != gs_tictactoe_space_state::gs_tictactoe_space_open) // Update to be if it's not the piece we are either
 		{
 			cout << "Player: " << currentPlayer << " enter your input. "<< endl;
-			cout << "Enter the X pos [1-3]." << endl;
-			cin >> y;
-			cout << "Enter the Y pos [1-3]." << endl;
-			cin >> x;
+			promptUserForInteger("Enter the X pos [1-3].", x);
+			promptUserForInteger("Enter the Y pos[1-3].", y);
 			x -= 1;
 			y -= 1;
+			
 			spaceState = gs_tictactoe_getSpaceState(game, x, y);
 			if (spaceState != gs_tictactoe_space_state::gs_tictactoe_space_open)
 			{
@@ -204,6 +203,7 @@ int launchTicTacToe()
 		gs_tictactoe_print(game);
 		gameWinner = gs_tictactoe_checkWin(game);
 	}
+
 	if(gameWinner != gs_tictactoe_space_state::gs_tictactoe_space_invalid)
 	cout << "Winner for: " << currentPlayer << endl;
 	else

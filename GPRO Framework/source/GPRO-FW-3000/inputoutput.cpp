@@ -1,5 +1,6 @@
-#include <stdio.h>
+#include <iostream>
 #include "GPRO-FW-3000/inputoutput.h"
+using namespace std;
 void printOutStringToConsole(char* outputMessage)
 {
 	printf(outputMessage);
@@ -15,4 +16,10 @@ int getIntegerFromConsole()
 void printIntegerToConsole(int intToPrint)
 {
     printf("%d", intToPrint);
+}
+
+void promptUserForInteger(const string &message, int& assign)
+{
+    cout << message << endl;
+    cin >> assign;
 }
