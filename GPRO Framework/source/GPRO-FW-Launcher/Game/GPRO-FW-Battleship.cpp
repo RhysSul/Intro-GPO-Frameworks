@@ -347,11 +347,16 @@ void gs_battleship_inGameLoop(gs_battleship& game, gs_battleship_index& currentP
 				break;
 			}
 		}
-		switch (gs_battleship_testSpace(game, currentPlayer, x, y))
+		switch (gs_battleship_testSpace(game, currentPlayer, x, y) )
 		{
 		case gs_battleship_space_hit:
+			cout << "Hit!" << endl;
+			break;
 		case gs_battleship_space_miss:
+			cout << "Miss!" << endl;
+			break;
 		default:
+			break;
 		}
 		cout << "Opponents Board:" << endl;
 		gs_battleship_printOpponentsBoard(game, currentPlayer);
